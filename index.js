@@ -3,8 +3,10 @@ const app = express()
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 
+morgan.token('post-data', (req, res) => JSON.stringify(req.body))
+
 app.use(bodyParser.json())
-app.use(morgan('tiny'))
+app.use(morgan(':method :url :status :res[content-length] - :response-time ms :post-data'))
 
 let persons = [
     {
@@ -12,7 +14,7 @@ let persons = [
         number: "040-123456",
         id: 1
     },
-    {
+    {        req.json(body)
         name: "Ada Lovelace",
         number: "39-44-5323523",
         id: 2
