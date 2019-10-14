@@ -14,7 +14,7 @@ let persons = [
         number: "040-123456",
         id: 1
     },
-    {        req.json(body)
+    {
         name: "Ada Lovelace",
         number: "39-44-5323523",
         id: 2
