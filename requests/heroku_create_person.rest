@@ -1,0 +1,7 @@
+POST https://pacific-inlet-92436.herokuapp.com/api/persons
+Content-Type: application/json
+
+{
+    "name": "Chuck Norris",
+    "number": "1111111"
+}
