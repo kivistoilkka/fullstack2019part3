@@ -13,7 +13,7 @@ app.use(bodyParser.json())
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :post-data'))
 app.use(express.static('build'))
 
-let persons = [
+/* let persons = [
     {
         name: "Arto Hellas",
         number: "040-123456",
@@ -34,7 +34,7 @@ let persons = [
         number: "39-23-6423122",
         id: 4
     },
-]
+] */
 
 app.get('/api/persons', (req, res) => {
     Person.find({}).then(persons => {
@@ -68,8 +68,6 @@ app.delete('/api/persons/:id', (req, res) => {
     res.status(204).end()
 })
 
-const generateId = () => Math.round(Math.random() * 1000000000)
-
 app.post('/api/persons', (req, res) => {
     const body = req.body
 
@@ -79,21 +77,20 @@ app.post('/api/persons', (req, res) => {
         })
     }
 
-    if (persons.find(person => person.name === body.name)) {
+/*     if (persons.find(person => person.name === body.name)) {
         return res.status(403).json({
             error: 'name must be unique'
         })
-    }
+    } */
 
-    const person = {
+    const person = new Person({
         name: body.name,
         number: body.number,
-        id: generateId(),
-    }
+    })
 
-    persons = persons.concat(person)
-
-    res.json(person)
+    person.save().then(savedPerson => {
+        res.json(savedPerson.toJSON())
+    })
 })
 
 const PORT = process.env.PORT
