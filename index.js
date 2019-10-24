@@ -78,12 +78,6 @@ app.post('/api/persons', (req, res) => {
         })
     }
 
-/*     if (persons.find(person => person.name === body.name)) {
-        return res.status(403).json({
-            error: 'name must be unique'
-        })
-    } */
-
     const person = new Person({
         name: body.name,
         number: body.number,
@@ -92,6 +86,25 @@ app.post('/api/persons', (req, res) => {
     person.save().then(savedPerson => {
         res.json(savedPerson.toJSON())
     })
+})
+
+app.put('/api/persons/:id', (req, res, next) => {
+    const body = req.body
+
+    const person = {
+        name: body.name,
+        number: body.number,
+    }
+
+    Person.findByIdAndUpdate(req.params.id, person, { new: true })
+        .then(updatedNote => {
+            if (updatedNote) {
+                res.json(updatedNote.toJSON())
+            } else {
+                res.status(404).end()
+            }
+        })
+        .catch(error => next(error))
 })
 
 const errorHandler = (error, req, res, next) => {
